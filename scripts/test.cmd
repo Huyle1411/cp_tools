@@ -1,2 +1,0 @@
-@echo off
-cptool test %* 

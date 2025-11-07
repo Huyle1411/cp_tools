@@ -1,0 +1,28 @@
+#!/bin/bash
+
+SRC_FILE=$1
+RUN=$2
+
+if [ -z "$SRC_FILE" ]; then
+    echo "Please provide Java file to compile"
+    echo "Usage: build.sh <filename.java>"
+    exit 1
+fi
+
+FILENAME=$(basename "$1" .java)
+
+echo "Compiling $SRC_FILE ..."
+
+javac -encoding UTF-8 -Xlint:all -Werror -g "$SRC_FILE"
+
+if [ $? -eq 0 ]; then
+    echo "Compilation successful!"
+    if [ "$RUN" == "1" ]; then
+        echo "-------------------------------------------"
+        java "$FILENAME"
+    fi
+    exit 0
+else
+    echo "Compilation failed!"
+    exit 1
+fi
