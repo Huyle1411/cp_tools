@@ -12,7 +12,7 @@ set "FILENAME=%~n1%"
 
 echo Compiling %SRC_FILE% ...
 
-javac -Xlint:all -g -encoding UTF-8 %SRC_FILE%
+javac -encoding UTF-8 -Xlint:all -Werror -g %SRC_FILE%
 
 :: Check for success or failure
 if %ERRORLEVEL%==0 (
