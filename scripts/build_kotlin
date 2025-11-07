@@ -1,0 +1,29 @@
+#!/bin/bash
+
+SRC_FILE=$1
+RUN=$2
+
+if [ -z "$SRC_FILE" ]; then
+    echo "Please provide Kotlin file to compile"
+    echo "Usage: build_kotlin.sh <filename.kt>"
+    exit 1
+fi
+
+FILENAME=$(basename "$1" .kt)
+JAR_FILE="$(dirname "$1")/$FILENAME.jar"
+
+echo "Compiling $SRC_FILE ..."
+
+kotlinc "$SRC_FILE" -include-runtime -d "$JAR_FILE"
+
+if [ $? -eq 0 ]; then
+    echo "Compilation successful!"
+    if [ "$RUN" == "1" ]; then
+        echo "-------------------------------------------"
+        java -jar "$JAR_FILE"
+    fi
+    exit 0
+else
+    echo "Compilation failed!"
+    exit 1
+fi
