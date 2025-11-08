@@ -19,9 +19,9 @@ int32_t main() {
     std::cin.tie(nullptr)->sync_with_stdio(false);
     std::cin.exceptions(std::cin.failbit);
 
-    int tests = 1;
-    std::cin >> tests;
-    for (int i = 1; i <= tests; ++i) {
+    int T = 1;
+    std::cin >> T;
+    for (int i = 1; i <= T; ++i) {
         Solution solution;
         solution.solve(i);
     }

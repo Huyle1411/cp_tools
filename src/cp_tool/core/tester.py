@@ -1,14 +1,13 @@
-import glob
-import os
 import subprocess
 import sys
 from pathlib import Path
-from typing import Optional
+from colorama import init, Fore, Style
 
 
 class SolutionTester:
     def __init__(self, debug: bool = False):
         self.debug = debug
+        init(autoreset=True)
 
     @staticmethod
     def compare_files(file1: Path, file2: Path) -> bool:
@@ -34,18 +33,18 @@ class SolutionTester:
             print(f"An error occurred: {e}")
 
     def print_io_file(self, input_file: Path, actual_file: Path, expected_file: Path) -> None:
-        print("\033[93mInput:\033[0m")
+        print(f"{Fore.YELLOW}Input:")
         self.print_file_content(input_file)
-        print("\033[93mOutput:\033[0m")
+        print(f"{Fore.YELLOW}Output:")
         self.print_file_content(actual_file)
-        print("\033[93mExpected:\033[0m")
+        print(f"{Fore.YELLOW}Expected:")
         self.print_file_content(expected_file)
 
-    def compile_if_needed(self, file_path: Path, lang: str) -> Optional[str]:
+    def compile_if_needed(self, file_path: Path, lang: str) -> str | None:
         """Compiles the source file if needed and returns the execution command"""
         if lang == "cpp":
             try:
-                command = f"build.cmd {file_path}.cpp"
+                command = f"build_cpp {file_path}.cpp"
                 result = subprocess.run(command, shell=True)
                 if result.returncode != 0:
                     return None
@@ -55,7 +54,7 @@ class SolutionTester:
                 return None
         elif lang == "java":
             try:
-                command = f"build_java.cmd {file_path}.java"
+                command = f"build_java {file_path}.java"
                 result = subprocess.run(command, shell=True)
                 if result.returncode != 0:
                     return None
@@ -65,7 +64,7 @@ class SolutionTester:
                 return None
         elif lang == "kt":
             try:
-                command = f"build_kotlin.cmd {file_path}.kt"
+                command = f"build_kotlin {file_path}.kt"
                 result = subprocess.run(command, shell=True)
                 if result.returncode != 0:
                     return None
@@ -90,7 +89,8 @@ class SolutionTester:
         index, correct = 1, 0
         while True:
             input_file = test_dir / f"{file_pattern.format(index=index)}.in"
-            expected_file = test_dir / f"{file_pattern.format(index=index)}.out"
+            expected_file = test_dir / \
+                f"{file_pattern.format(index=index)}.out"
             actual_file = test_dir / f"{file_pattern.format(index=index)}.res"
 
             if not expected_file.exists() and not actual_file.exists():
@@ -106,24 +106,26 @@ class SolutionTester:
                 return
 
             if not expected_file.exists() or not actual_file.exists():
-                print("Something wrong !!! File doesn't match between actual and expected output")
+                print(
+                    "Something wrong !!! File doesn't match between actual and expected output")
                 return
 
             if self.compare_files(expected_file, actual_file):
                 correct += 1
-                print(f"Test case {index}: \033[92mAccepted\033[0m")
+                print(f"Test case {index}: {Fore.GREEN}Accepted")
                 if self.debug:
                     self.print_io_file(input_file, actual_file, expected_file)
             else:
-                print(f"Test case {index}: \033[91mWrong Answer\033[0m")
+                print(f"Test case {index}: {Fore.RED}Wrong Answer")
                 self.print_io_file(input_file, actual_file, expected_file)
 
             index += 1
-        
+
         if index == 1:
             print("No test cases found")
         else:
-            print(f"\033[92m{correct}/{index - 1}\033[0m test cases passed")
+            print(
+                f"{Fore.GREEN}{correct}/{index - 1}{Style.RESET_ALL} test cases passed")
 
 
 def main():

@@ -7,8 +7,7 @@ public class Main {
         StringTokenizer st = new StringTokenizer("");
 
         String next() {
-            while (!st.hasMoreTokens())
-                try {
+            while (!st.hasMoreTokens()) try {
                     st = new StringTokenizer(br.readLine());
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -22,8 +21,7 @@ public class Main {
 
         int[] readArray(int n) {
             int[] res = new int[n];
-            for (int i = 0; i < n; i++)
-                res[i] = nextInt();
+            for (int i = 0; i < n; i++) res[i] = nextInt();
             return res;
         }
 
@@ -33,8 +31,7 @@ public class Main {
 
         long[] readLongArray(int n) {
             long[] res = new long[n];
-            for (int i = 0; i < n; i++)
-                res[i] = nextLong();
+            for (int i = 0; i < n; i++) res[i] = nextLong();
             return res;
         }
     }
@@ -43,8 +40,9 @@ public class Main {
     static StringBuilder out = new StringBuilder();
 
     public static void main(String[] args) {
-        int t = in.nextInt();
-        for (int i = 1; i <= t; i++) {
+        int T = 1;
+        T = in.nextInt();
+        for (int i = 1; i <= T; i++) {
             solve(i);
         }
         System.out.print(out);
