@@ -2,7 +2,7 @@
 using i64 = long long;
 
 #ifdef DEBUG
-#include "debugutil.h"
+#include "util/debugutil.h"
 #else
 #define debug(...) 666
 #define debugArr(arr, n) 666

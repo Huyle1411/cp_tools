@@ -17,9 +17,6 @@ inline void print(char x) {
 inline void print(bool x) {
     std::cerr << (x ? "T" : "F");
 }
-inline void print(std::__cxx1998::_Bit_reference x) {
-    std::cerr << (x ? "T" : "F");
-}
 inline void print(std::string x) {
     std::cerr << "\"" << x << "\"";
 }

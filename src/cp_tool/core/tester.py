@@ -3,8 +3,13 @@ import sys
 from pathlib import Path
 from colorama import init, Fore, Style
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+from cp_tool.config import PROJECT_ROOT
+
 
 class SolutionTester:
+    debug: bool
+
     def __init__(self, debug: bool = False):
         self.debug = debug
         init(autoreset=True)
@@ -15,7 +20,7 @@ class SolutionTester:
             content1 = f1.readlines()
             content2 = f2.readlines()
 
-        def normalize_content(file):
+        def normalize_content(file: list[str]):
             return [line.rstrip() for line in file if line.strip()]
 
         normalized_content1 = normalize_content(content1)
@@ -48,7 +53,7 @@ class SolutionTester:
                 result = subprocess.run(command, shell=True)
                 if result.returncode != 0:
                     return None
-                return str(file_path) + ".exe"
+                return str(file_path)
             except subprocess.CalledProcessError as e:
                 print(f"Error compiling cpp: {e}")
                 return None
@@ -58,7 +63,7 @@ class SolutionTester:
                 result = subprocess.run(command, shell=True)
                 if result.returncode != 0:
                     return None
-                return f"java -cp {file_path.parent} {file_path.name}"
+                return f"java -cp {file_path.parent}:{PROJECT_ROOT}/template {file_path.name}"
             except subprocess.CalledProcessError as e:
                 print(f"Error compiling java: {e}")
                 return None

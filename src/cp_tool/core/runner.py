@@ -1,7 +1,13 @@
-import sys, os, subprocess
+import sys
+import os
+import subprocess
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+from cp_tool.config import PROJECT_ROOT
 
 
-def print_file_content(file_path):
+def print_file_content(file_path: str):
     try:
         with open(file_path, "r") as file:
             content = file.read()
@@ -12,19 +18,19 @@ def print_file_content(file_path):
         print(f"An error occurred: {e}")
 
 
-def print_output(output):
+def print_output(output: str):
     print("\033[93mOutput:\033[0m")
     print_file_content(output)
 
 
-def run_program(subfolder, lang):
-    file_name = subfolder + "\\Main" 
+def run_program(subfolder: str, lang: str):
+    file_name = subfolder + "/Main"
     execute_file = file_name + "." + lang
 
     # Compile if needed
     if lang == "cpp":
         try:
-            command = f"build.cmd {file_name}.cpp"
+            command = f"build_cpp {file_name}.cpp"
             result = subprocess.run(command, shell=True)
             if result.returncode != 0:
                 return
@@ -32,10 +38,10 @@ def run_program(subfolder, lang):
             print(f"Error running: {e}")
             return
 
-        execute_file = file_name + ".exe"
+        execute_file = file_name
     elif lang == "java":
         try:
-            command = f"build_java.cmd {file_name}.java"
+            command = f"build_java {file_name}.java"
             result = subprocess.run(command, shell=True)
             if result.returncode != 0:
                 return
@@ -43,7 +49,8 @@ def run_program(subfolder, lang):
             print(f"Error running: {e}")
             return
 
-        execute_file = "java -cp " + subfolder + " Main"
+        execute_file = "java -cp " + subfolder + \
+            f":{PROJECT_ROOT}/template" + " Main"
 
     output_file = os.path.join("temp_output.res")
 
