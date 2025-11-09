@@ -21,5 +21,5 @@ class Version:
 
 
 # Current version
-CURRENT_VERSION = Version.from_string("2.2.3")
+CURRENT_VERSION = Version.from_string("2.3.0")
 VERSION = str(CURRENT_VERSION)
